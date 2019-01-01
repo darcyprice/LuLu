@@ -1,6 +1,7 @@
 <?php
 
 /* CREATE A PLAYLIST IN THE nowPlayingBar */
+/* Testing PHP comments and git commit */
 
 // select a RANDOM set of songs from the db
 $songQuery = mysqli_query($con,
