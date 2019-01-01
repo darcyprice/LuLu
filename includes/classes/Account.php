@@ -13,7 +13,7 @@
 
 			$pw = md5($pw); // encycrpt the pw
 
-			$query = mysqli_query($this->con, "SELECT * FROM users WHERE username='$un' AND password='$pw'"); // get all rows with same un and pw
+			$query = mysqli_query($this->con, "SELECT * FROM Users WHERE username='$un' AND password='$pw'"); // get all rows with same un and pw
 
 			if(mysqli_num_rows($query) == 1) { // if un and pw combination is found (and is unique) in db
 				return true;
@@ -58,7 +58,7 @@
 
 			// insert the values into the db
 			// mqsli_query returns TRUE if it's successful, FALSE if otherwise
-			$result = mysqli_query($this->con, "INSERT INTO users VALUES (id, '$un', '$fn', '$ln', '$em', '$encryptedPw', '$date', '$profilePic')");
+			$result = mysqli_query($this->con, "INSERT INTO Users VALUES (userID, '$un', '$fn', '$ln', '$em', '$encryptedPw', '$date', '$profilePic')");
 
 			return $result;
 		}
@@ -74,7 +74,7 @@
 			}
 
 			// checks if username exists
-			$checkUsernameQuery = mysqli_query($this->con, "SELECT username FROM users WHERE username='$un'"); // check if the username already exists in db
+			$checkUsernameQuery = mysqli_query($this->con, "SELECT username FROM Users WHERE username='$un'"); // check if the username already exists in db
 			if(mysqli_num_rows($checkUsernameQuery) != 0) { // if the username does exist
 				array_push($this->errorArray, Constants::$usernameTaken); // send the error message to the array
 				return;
@@ -108,7 +108,7 @@
 			}
 
 			// checks if email exists
-			$checkEmailQuery = mysqli_query($this->con, "SELECT email FROM users WHERE email='$em'"); // check if the username already exists in db
+			$checkEmailQuery = mysqli_query($this->con, "SELECT email FROM Users WHERE email='$em'"); // check if the username already exists in db
 			if(mysqli_num_rows($checkEmailQuery) != 0) { // if the username does exist
 				array_push($this->errorArray, Constants::$emailTaken); // send the error message to the array
 				return;

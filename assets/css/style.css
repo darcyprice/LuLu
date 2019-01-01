@@ -7,6 +7,13 @@ html, body {
 * {
 	font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 	color: #fff;
+	letter-spacing: 1px;
+}
+
+body {
+	background-color: #181818;
+	font-size: 14px;
+	min-width: 720px;
 }
 
 #nowPlayingBarContainer {
@@ -171,12 +178,12 @@ html, body {
 	width: 32px;
 }
 
-#mainContainer #topContainer #navBarContainer .navBar .group {
+#topContainer #navBarContainer .navBar .group {
     border-top: 1px solid #a0a0a0;
     padding: 10px 0;
 }
 
-#mainContainer #topContainer #navBarContainer .navBar .group .navItem {
+#topContainer #navBarContainer .navBar .group .navItem {
     padding: 10px 0;
     font-size: 14px;
     font-weight: 700;
@@ -185,14 +192,171 @@ html, body {
     position: relative;
 }
 
-#mainContainer #topContainer #navBarContainer .navBar .group .navItem .navItemLink {
+#topContainer #navBarContainer .navBar .group .navItem .navItemLink {
     color: #a0a0a0;
     text-decoration: none;
 }
 
-#mainContainer #topContainer #navBarContainer .navBar .group .navItem .navItemLink .icon {
+#topContainer #navBarContainer .navBar .group .navItem .navItemLink:hover {
+    color: #ffffff;
+}
+
+#topContainer #navBarContainer .navBar .group .navItem .navItemLink .icon {
 	width: 25px;
 	position: absolute;
 	right: 0;
 	top: 6px;
 }
+
+#topContainer #mainViewContainer {
+	margin-left: 220px;
+	padding-bottom: 90px;
+	width: calc(100% - 220px);
+}
+
+#topContainer #mainViewContainer #mainContent {
+	padding: 0 20px;
+}
+
+#topContainer #mainViewContainer #mainContent .entityInfo {
+	padding: 40px 0 10px 0;
+	display: inline-block;
+	width: 100%;
+}
+
+#topContainer #mainViewContainer #mainContent .entityInfo .leftSection {
+	width: 30%;
+	float: left;
+	max-width: 250px;
+}
+
+#topContainer #mainViewContainer #mainContent .entityInfo .leftSection img {
+	width: 100%;
+}
+
+#topContainer #mainViewContainer #mainContent .entityInfo .rightSection {
+	width: 70%;
+	float: left;
+	padding: 5px 10px 5px 40px;
+	box-sizing: border-box;
+}
+
+#topContainer #mainViewContainer #mainContent .entityInfo .rightSection h2 {
+	margin-top: 5px;
+}
+
+#topContainer #mainViewContainer #mainContent .entityInfo .rightSection p {
+	color: #939393;
+	font-weight: 200;
+}
+
+.pageHeadingBig {
+    padding: 20px;
+    text-align: center;
+}
+
+.gridViewItem {
+	display: inline-block;
+	margin-right: 20px;
+	margin-bottom: 20px;
+	width: 29%;
+	max-width: 200px;
+	min-width: 150px;
+}
+
+.gridViewItem a {
+	text-decoration: none;
+}
+
+.gridViewItem img {
+	width: 100%;
+}
+
+.gridViewItem .gridViewInfo {
+	font-weight: 300;
+	text-align: center;
+	padding: 5px 0;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+.trackListContainer .trackList {
+	padding: 0;
+}
+
+.trackListContainer .trackList .trackListRow {
+	height: 40px;
+	padding: 15px 10px;
+	list-style: none;
+}
+
+.trackListContainer .trackList .trackListRow span {
+	color: #939393;
+	font-weight: 200;
+}
+
+.trackListContainer .trackList .trackListRow:hover {
+	background-color: #282828;
+}
+
+.trackListContainer .trackList .trackListRow .trackCount {
+	width: 8%;
+	float: left;
+}
+
+.trackListContainer .trackList .trackListRow .trackCount img {
+	width: 20px;
+	visibility: hidden;
+	position: absolute;
+	cursor: pointer;
+}
+
+.trackListContainer .trackList .trackListRow:hover .trackCount img {
+	visibility: visible;
+}
+
+.trackListContainer .trackList .trackListRow .trackCount span {
+	visibility: visible;
+}
+
+.trackListContainer .trackList .trackListRow:hover .trackCount span {
+	visibility: hidden;
+}
+
+.trackListContainer .trackList .trackListRow .trackInfo {
+	width: 75%;
+	float: left;
+}
+
+.trackListContainer .trackList .trackListRow .trackInfo span {
+	display: block;
+}
+
+.trackListContainer .trackList .trackListRow .trackInfo .trackName {
+	color: #fff;
+	margin-bottom: 7px;
+}
+
+.trackListContainer .trackList .trackListRow .trackOptions {
+	width: 5%;
+	float: left;
+	text-align: right;
+}
+
+.trackListContainer .trackList .trackListRow .trackOptions img {
+	width: 15px;
+	visibility: hidden;
+}
+
+.trackListContainer .trackList .trackListRow:hover .trackOptions img {
+	visibility: visible;
+}
+
+.trackListContainer .trackList .trackListRow .trackDuration {
+	width: 12%;
+	float: left;
+	text-align: right;
+}
+
+
