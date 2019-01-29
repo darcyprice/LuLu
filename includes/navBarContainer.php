@@ -22,7 +22,7 @@
 				<a href="yourMusic.php" class="navItemLink">Your Music</a>
 			</div>
 			<div class="navItem">
-				<a href="profile.php" class="navItemLink">Homer Simpson</a>
+				<a href="profile.php" class="navItemLink">Marge Simpson</a>
 			</div>
 		</div>
 
