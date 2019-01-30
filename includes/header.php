@@ -8,7 +8,10 @@ include("includes/classes/Song.php");
 /* to prevent the user from accessing index.php until they register/login */
 if(isset($_SESSION['userLoggedIn'])) { // check if session variable is set. that is, if user is already logged in
 	$userLoggedIn = $_SESSION['userLoggedIn']; // if yes, create a variable that contains the user's username
-} else {
+	// store the username of the userLoggedIn as a JS variable
+	echo "<script>userLoggedIn = '$userLoggedIn';</script>";
+}
+else {
 	header("Location: register.php"); // if no, direct to register.php. That is, prevent the user from accessing index.php until they log in
 }
 
@@ -30,9 +33,9 @@ if(isset($_SESSION['userLoggedIn'])) { // check if session variable is set. that
 	<div id="mainContainer">
 
 		<div id="topContainer">
-			
+
 			<?php include("includes/navBarContainer.php"); ?>
 
 			<div id="mainViewContainer">
-				
+
 				<div id="mainContent">

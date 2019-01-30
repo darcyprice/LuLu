@@ -74,7 +74,7 @@
 					<div class="hasAccountText">
 						<span id="hideLogin">Don't have an account yet? Sign up here.</span>
 					</div>
-					
+
 				</form>
 
 
@@ -131,7 +131,7 @@
 					<div class="hasAccountText">
 						<span id="hideRegister">Already have an account? Login here.</span>
 					</div>
-					
+
 				</form>
 
 			</div>
@@ -146,7 +146,7 @@
 				</ul>
 			</div>
 
-		</div>	
+		</div>
 	</div>
 
 </body>
