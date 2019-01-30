@@ -2,9 +2,9 @@
 
 	<nav class="navBar">
 
-		<a href="index.php" class="logo">
+		<span class="logo" onclick="openPage('index.php')">
 			<img src="assets/images/icons/logo.png" alt="Icon">
-		</a>
+		</span>
 
 		<div class="group">
 			<div class="navItem">
@@ -27,5 +27,5 @@
 		</div>
 
 	</nav>
-	
+
 </div>

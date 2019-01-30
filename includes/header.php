@@ -10,8 +10,7 @@ if(isset($_SESSION['userLoggedIn'])) { // check if session variable is set. that
 	$userLoggedIn = $_SESSION['userLoggedIn']; // if yes, create a variable that contains the user's username
 	// store the username of the userLoggedIn as a JS variable
 	echo "<script>userLoggedIn = '$userLoggedIn';</script>";
-}
-else {
+} else {
 	header("Location: register.php"); // if no, direct to register.php. That is, prevent the user from accessing index.php until they log in
 }
 

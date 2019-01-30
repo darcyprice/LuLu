@@ -9,6 +9,17 @@ var shuffle = false;
 var userLoggedIn;
 
 
+function openPage(url) {
+	// if the URL doesn't have a "?", include it
+	if(url.indexOf("?") == -1) {
+		url = url + "?";
+	}
+	// encodes the URL into a variable
+	var encodedURL = encodeURI(url + "&userLoggedIn=" + userLoggedIn);
+	// swap the current content of #mainContent with the new content
+	$("#mainContent").load(encodedURL);
+}
+
 function formatTime(seconds) {
 	var time = Math.round(seconds);
 	var minutes = Math.floor(time/60);
