@@ -168,7 +168,7 @@ function setTrack(trackID, newPlaylist, play) {
 
 	/* AJAX call */
 	$.post("includes/handlers/ajax/getSongJson.php", { songID : trackID }, function(data) {
-		
+
 		// first, we need to parse the data to convert it into an object
 		var track = JSON.parse(data);
 
@@ -190,11 +190,10 @@ function setTrack(trackID, newPlaylist, play) {
 		});
 
 		audioElement.setTrack(track);
-		playSong();
 	});
 
 	if(play == true) {
-		audioElement.play(); 
+		audioElement.play();
 	}
 }
 
