@@ -156,7 +156,7 @@ function setTrack(trackID, newPlaylist, play) {
 		shuffleArray(shufflePlaylist); // shuffles the copy of currentPlaylist
 	}
 
-	if(shuffle) { // same as if shuffle == true
+	if(shuffle == true) {
 		currentIndex = shufflePlaylist.indexOf(trackID);
 	}
 	else {
