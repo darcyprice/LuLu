@@ -21,7 +21,7 @@ $artist = new Artist($con, $artistID);
         ?>
       </h1>
       <div class="headerButtons">
-        <button class="button">Play</button>
+        <button class="button green">PLAY</button>
       </div>
     </div>
   </div>
