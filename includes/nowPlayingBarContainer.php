@@ -147,7 +147,6 @@ function shuffleArray(a) {
     }
 }
 
-
 function setTrack(trackID, newPlaylist, play) {
 
 	// if the User selects a new song, that comes with a new playlist (ie, selected a song from a different Album)
