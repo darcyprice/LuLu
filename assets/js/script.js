@@ -18,6 +18,11 @@ function openPage(url) {
 	var encodedURL = encodeURI(url + "&userLoggedIn=" + userLoggedIn);
 	// swap the current content of #mainContent with the new content
 	$("#mainContent").load(encodedURL);
+	// scrolls to the top of page, when the page is changed
+	$("body").scrollTop(0);
+	// inserts the url into the history (so that the user thinks the url has actually
+	// changed, when, instead, ajax has merely changed the container)
+	history.pushState(null, null, url);
 }
 
 function formatTime(seconds) {
