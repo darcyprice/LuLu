@@ -1,6 +1,6 @@
 <?php
 
-include("includes/header.php");
+// header is included in includes/includedFiles.php
 include("includes/includedFiles.php");
 
 ?>
@@ -29,5 +29,3 @@ include("includes/includedFiles.php");
 	?>
 
 </div>
-
-<?php include("includes/footer.php"); ?>
