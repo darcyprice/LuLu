@@ -15,14 +15,13 @@ include("includes/includedFiles.php");
 		while($row = mysqli_fetch_array($albumQuery)) {
 			/* create an html div element each time it loops through the queryset */
 			echo "<div class='gridViewItem'>
-					<a href='album.php?albumID=" . $row['albumID'] . "'>
-
+					<span role='link' tabindex='0' onclick='openPage(\"album.php?albumID=" . $row['albumID'] . "\")'>
 						<img src='" . $row['artworkPath'] . "'>
 
 						<div class='gridViewInfo'>"
 							. $row['albumTitle'] .
 						"</div>
-					</a>
+					</span>
 
 				</div>";
 		}
