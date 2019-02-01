@@ -16,6 +16,15 @@ body {
 	min-width: 720px;
 }
 
+label,
+button,
+input[type="submit"],
+input[type="button"],
+input[type="reset"],
+[role="link"] {
+	cursor: pointer;
+}
+
 .button {
 	color: #fff;
 	cursor: pointer;
@@ -32,6 +41,11 @@ body {
 .button.green {
 	background-color: #2ebd59;
 	border-color: #2ebd59;
+}
+
+.borderBottom {
+	border-bottom: 1px solid #939393;
+	margin-bottom: 20px;
 }
 
 #nowPlayingBarContainer {
@@ -301,6 +315,11 @@ body {
 	text-overflow: ellipsis;
 	overflow: hidden;
 	white-space: nowrap;
+}
+
+.trackListContainer h2,
+.gridViewContainer h2 {
+	text-align: center;
 }
 
 .trackListContainer .trackList {

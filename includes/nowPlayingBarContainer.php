@@ -167,25 +167,27 @@ function setTrack(trackID, newPlaylist, play) {
 
 	/* AJAX call */
 	$.post("includes/handlers/ajax/getSongJson.php", { songID : trackID }, function(data) {
-
-		// first, we need to parse the data to convert it into an object
+		// parse the data to convert it into an object
 		var track = JSON.parse(data);
-
 		// automatically update the html element with the songTitle of track currently playing
 		$(".trackName span").text(track.songTitle);
-
 		// use an AJAX call to retrieve the artistName from the song curretly playing
 		$.post("includes/handlers/ajax/getArtistJson.php", { artistID : track.songArtist }, function(data) {
 			var artist = JSON.parse(data);
 			// automatically update the html element with the artistName of track currently playing
 			$(".artistName span").text(artist.artistName);
+			// include onclick(openPage('artist.php...')) to span element
+			$(".artistName span").attr("onclick", "openPage('artist.php?artistID=" + artist.artistID + "')");
 		});
-
 		// use an AJAX call to retrieve the albumArtwork from the song curretly playing
 		$.post("includes/handlers/ajax/getAlbumJson.php", { albumID : track.songAlbum }, function(data) {
 			var album = JSON.parse(data);
 			// automatically update the html element with the artistName of track currently playing
 			$(".albumLink img").attr("src", album.artworkPath);
+			// include onclick(openPage('album.php...')) to span element
+			$(".albumLink img").attr("onclick", "openPage('album.php?albumID=" + album.albumID + "')");
+			// include onclick(openPage('album.php...')) to span element
+			$(".trackName span").attr("onclick", "openPage('album.php?albumID=" + album.albumID + "')");
 		});
 
 		audioElement.setTrack(track);
@@ -223,14 +225,14 @@ function pauseSong() {
 		<div id="nowPlayingLeft">
 			<div class="content">
 				<span class="albumLink">
-					<img class="albumArtwork" src="" alt="alt: albumArtwork">
+					<img class="albumArtwork" role="link" tabindex="0" src="" alt="album Artwork">
 				</span>
 				<div class="trackInfo">
 					<span class="trackName">
-						<span></span>
+						<span role="link" tabindex="0"></span>
 					</span>
 					<span class="artistName">
-						<span></span>
+						<span role="link" tabindex="0"></span>
 					</span>
 				</div>
 			</div>

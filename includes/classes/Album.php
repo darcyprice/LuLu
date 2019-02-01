@@ -42,21 +42,13 @@
 		}
 
 		public function getSongIDs() {
-
 			$query = mysqli_query($this->con, "SELECT songID FROM Songs WHERE songAlbum='$this->albumID' ORDER BY albumOrder ASC");
-
 			$array = array(); // create an array to hold all the songIDs
-
 			while($row = mysqli_fetch_array($query)) {
 				array_push($array, $row['songID']);
 			}
-
 			return $array;
 		}
-
-
-
-
 
 		public function ORIGINAL_getSongIDs() {
 			$query = mysqli_query($this->con,
