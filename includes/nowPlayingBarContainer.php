@@ -175,19 +175,19 @@ function setTrack(trackID, newPlaylist, play) {
 		$.post("includes/handlers/ajax/getArtistJson.php", { artistID : track.songArtist }, function(data) {
 			var artist = JSON.parse(data);
 			// automatically update the html element with the artistName of track currently playing
-			$(".artistName span").text(artist.artistName);
+			$(".trackInfo .artistName span").text(artist.artistName);
 			// include onclick(openPage('artist.php...')) to span element
-			$(".artistName span").attr("onclick", "openPage('artist.php?artistID=" + artist.artistID + "')");
+			$(".trackInfo .artistName span").attr("onclick", "openPage('artist.php?artistID=" + artist.artistID + "')");
 		});
 		// use an AJAX call to retrieve the albumArtwork from the song curretly playing
 		$.post("includes/handlers/ajax/getAlbumJson.php", { albumID : track.songAlbum }, function(data) {
 			var album = JSON.parse(data);
 			// automatically update the html element with the artistName of track currently playing
-			$(".albumLink img").attr("src", album.artworkPath);
+			$(".content .albumLink img").attr("src", album.artworkPath);
 			// include onclick(openPage('album.php...')) to span element
-			$(".albumLink img").attr("onclick", "openPage('album.php?albumID=" + album.albumID + "')");
+			$(".content .albumLink img").attr("onclick", "openPage('album.php?albumID=" + album.albumID + "')");
 			// include onclick(openPage('album.php...')) to span element
-			$(".trackName span").attr("onclick", "openPage('album.php?albumID=" + album.albumID + "')");
+			$(".trackInfo .trackName span").attr("onclick", "openPage('album.php?albumID=" + album.albumID + "')");
 		});
 
 		audioElement.setTrack(track);

@@ -9,6 +9,10 @@
 			$this->artistID = $artistID;
 		}
 
+		public function getID() {
+			return $this->artistID;
+		}
+
 		public function getName() {
 			$artistQuery = mysqli_query($this->con, "SELECT artistName FROM Artists WHERE artistID='$this->artistID'");
 			$artist = mysqli_fetch_array($artistQuery);

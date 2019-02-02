@@ -95,5 +95,4 @@ $artist = new Artist($con, $artistID);
 				</div>";
 		}
 	?>
-
 </div>
