@@ -4,7 +4,7 @@ include("includes/includedFiles.php");
 
 <div class="playlistsContainer">
     <div class="gridViewContainer">
-        <h2>PLAYLIST</h2>
+        <h2>PLAYLISTS</h2>
         <div class="buttonItems">
             <button class="button green" onclick="createPlaylist()">NEW PLAYLIST</button>
         </div>
@@ -27,7 +27,7 @@ include("includes/includedFiles.php");
 
     			// create an html div element each time it loops through the queryset
                 // outputting each playlist fetched in the query
-    			echo "<div class='gridViewItem'>
+    			echo "<div class='gridViewItem' onclick='openPage(\"playlist.php?id=" . $playlist->getID() . "\")'>
                         <div class='playlistImage'>
                             <img src='assets/images/icons/playlist.png' alt='playlistIcon'>
                         </div>

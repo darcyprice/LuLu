@@ -30,7 +30,7 @@
 			$this->duration = $this->mysqliData['duration'];
 			$this->songInstrument = $this->mysqliData['songInstrument'];
 			$this->path = $this->mysqliData['path'];
-			// $this->albumOrder = $song['albumOrder']; this is done later 
+			// $this->albumOrder = $song['albumOrder']; this is done later
 			// $this->plays ; we don't create a variable for plays, because we want to create the variable every time the song is played
 		}
 
