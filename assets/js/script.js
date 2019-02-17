@@ -36,7 +36,7 @@ function createPlaylist() {
 	if (popup != null) {
 		// AJAX call
 		$.post("includes/handlers/ajax/createPlaylist.php", { name: popup, username: userLoggedIn })
-		// .done() executes when the AJAX call is completed
+		// .done() executes when the ajax call is completed
 		.done(function(error) {
 
 			if (error != "") {
@@ -45,7 +45,7 @@ function createPlaylist() {
 			}
 			// do something when ajax returns
 			// open openMusic.php (which the page we're already on, so it's essentially a refresh)
-			/// openPage("yourMusic.php");
+			openPage("yourMusic.php");
 		});
 	}
 }
