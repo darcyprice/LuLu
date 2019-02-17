@@ -30,6 +30,26 @@ function openPage(url) {
 	history.pushState(null, null, url);
 }
 
+function createPlaylist() {
+	var popup = prompt("Enter name of the playlist");
+
+	if (popup != null) {
+		// AJAX call
+		$.post("includes/handlers/ajax/createPlaylist.php", { name: popup, username: userLoggedIn })
+		// .done() executes when the AJAX call is completed
+		.done(function(error) {
+
+			if (error != "") {
+				alert(error);
+				return;
+			}
+			// do something when ajax returns
+			// open openMusic.php (which the page we're already on, so it's essentially a refresh)
+			/// openPage("yourMusic.php");
+		});
+	}
+}
+
 function formatTime(seconds) {
 	var time = Math.round(seconds);
 	var minutes = Math.floor(time/60);

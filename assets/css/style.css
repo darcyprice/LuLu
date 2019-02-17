@@ -443,3 +443,12 @@ input:focus {
 .searchResultRow .artistName span {
 	color: #fff;
 }
+
+.playlistsContainer {
+	padding: 10px 0;
+}
+
+.buttonItems .button {
+	display: block;
+	margin: 0 auto 20px auto;
+}
