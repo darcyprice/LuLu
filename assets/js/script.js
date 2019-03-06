@@ -50,6 +50,24 @@ function createPlaylist() {
 	}
 }
 
+function deletePlaylist(playlistID) {
+	var prompt = confirm("Are you sure you want to delete this playlist?");
+
+	if (prompt == true) {
+		// AJAX call
+		$.post("includes/handlers/ajax/deletePlaylist.php", { playlistID : playlistID })
+		// .done() executes when the ajax call is completed
+		.done(function(error) {
+			if (error != "") {
+				alert(error);
+				return;
+			}
+			// open openMusic.php (which the page we're already on, so it's essentially a refresh)
+			openPage("yourMusic.php");
+		});
+	}
+}
+
 function formatTime(seconds) {
 	var time = Math.round(seconds);
 	var minutes = Math.floor(time/60);

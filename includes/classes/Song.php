@@ -44,7 +44,7 @@
 
 		public function getArtist() {
 			// returns artistName (ie 'The Beatles') rather than artistID (ie '1'). That is, returns an Artist object.
-			return new Artist($this->con, $this->artistID);
+			return new Artist($this->con, $this->songArtist);
 		}
 
 		public function getAlbum() {
