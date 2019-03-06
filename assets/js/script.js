@@ -92,6 +92,24 @@ function showOptionsMenu(button) {
 	var left = $(button).position().left;
 	// add css to menu (which is .optionsMenu)
 	menu.css({ "top": top + "px", "left": left - menuWith + "px", "display": "inline" })
+ 
+  
+ function deletePlaylist(playlistID) {
+	var prompt = confirm("Are you sure you want to delete this playlist?");
+
+	if (prompt == true) {
+		// AJAX call
+		$.post("includes/handlers/ajax/deletePlaylist.php", { playlistID : playlistID })
+		// .done() executes when the ajax call is completed
+		.done(function(error) {
+			if (error != "") {
+				alert(error);
+				return;
+			}
+			// open openMusic.php (which the page we're already on, so it's essentially a refresh)
+			openPage("yourMusic.php");
+		});
+	}
 }
 
 function formatTime(seconds) {
