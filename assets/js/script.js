@@ -9,6 +9,23 @@ var shuffle = false;
 var userLoggedIn;
 var timer;
 
+// event: if the User clicks on the page
+$(document).click(function(click) {
+	// where the User has clicked
+	var target = $(click.target);
+	// if the User hasn't clicked on .item or .optionsMenu, hide .optionsMenu
+	if (!target.hasClass("item") && !target.hasClass("optionsButton")) {
+		hideOptionsMenu();
+	}
+
+
+});
+
+// event: if the User scrolls on the page
+$(window).scroll(function() {
+	// call hideOptionsMenu() function
+	hideOptionsMenu();
+});
 
 function openPage(url) {
 	// if timer is going, clear timer when open new page
@@ -50,7 +67,34 @@ function createPlaylist() {
 	}
 }
 
-function deletePlaylist(playlistID) {
+// function to hide the optionsMenu (function is called when page is scrolled)
+function hideOptionsMenu() {
+	var menu = $(".optionsMenu");
+
+	if (menu.css("display") != "none") {
+		menu.css("display", "none");
+	}
+
+}
+
+// function to ensure that optionsMenu button appears in line with each <li class='trackListRow'>
+// to do that, need to get the position of each trackListRow on the screen
+function showOptionsMenu(button) {
+	var menu = $(".optionsMenu");
+	var menuWith = menu.width();
+	// distance from top of window to top of document
+	var scrollTop = $(window).scrollTop();
+	// distance from top of document
+	var elementOffset = $(button).offset().top;
+	// how far from the top the optionsButton is
+	var top = elementOffset - scrollTop;
+	// how far from the left the optionsButton is
+	var left = $(button).position().left;
+	// add css to menu (which is .optionsMenu)
+	menu.css({ "top": top + "px", "left": left - menuWith + "px", "display": "inline" })
+ 
+  
+ function deletePlaylist(playlistID) {
 	var prompt = confirm("Are you sure you want to delete this playlist?");
 
 	if (prompt == true) {

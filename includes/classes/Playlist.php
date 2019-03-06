@@ -55,5 +55,26 @@
 			return $array;
 		}
 
+		// function to get the playlist options on the add to playlist dropdown menu
+		// function has to be static because we want to be able to call it without calling an instance of it's class
+		// accordingly, we need to pass $con in again
+		public static function getPlaylistsDropdown($con, $username) {
+			$dropdown = '<select class="item playlist">
+							<option value="">Add to playlist</option>';
+			// fetch all playlists associated with userLoggedIn
+			$sql = "SELECT id, name FROM Playlists
+					WHERE owner = '$username'";
+			$query = mysqli_query($con, $sql);
+			// iterate over each row in the query
+			while ($row = mysqli_fetch_array($query)) {
+				$id = $row['id'];
+				$name = $row['name'];
+				// append the $row as an option to the select tag
+				$dropdown = $dropdown . "<option value='$id'>$name</option>";
+			}
+
+			return $dropdown . "</select>";
+		}
+
 	}
 ?>
