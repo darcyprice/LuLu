@@ -27,6 +27,14 @@ $(window).scroll(function() {
 	hideOptionsMenu();
 });
 
+// function will be fired everytime the select.playlist dropdown menu changes
+$(document).on("onchage", "select.playlist", function() {
+	// 'this' refers to the element which the event was fired on (this is case: "select.playlist")
+	var playlistID = $(this).val();
+	// 'prev' goes up the document object model to find the immediate ancestor in the html doc
+	var songID = $(this).prev(."songID").val();
+});
+
 function openPage(url) {
 	// if timer is going, clear timer when open new page
 	if(timer != null) {
@@ -80,8 +88,14 @@ function hideOptionsMenu() {
 // function to ensure that optionsMenu button appears in line with each <li class='trackListRow'>
 // to do that, need to get the position of each trackListRow on the screen
 function showOptionsMenu(button) {
+	// everytime the songID menu is shown,
+	// 'prevAll' will go up multiple ancestors to find the match in the html doc
+	var songID = $(button).prevAll(".songID").val();
 	var menu = $(".optionsMenu");
 	var menuWith = menu.width();
+	// finds the value of the songID item from the menu (which = ".optionsMenu")
+	menu.find(".songID").val(songID);
+
 	// distance from top of window to top of document
 	var scrollTop = $(window).scrollTop();
 	// distance from top of document
@@ -92,8 +106,8 @@ function showOptionsMenu(button) {
 	var left = $(button).position().left;
 	// add css to menu (which is .optionsMenu)
 	menu.css({ "top": top + "px", "left": left - menuWith + "px", "display": "inline" })
- 
-  
+
+
  function deletePlaylist(playlistID) {
 	var prompt = confirm("Are you sure you want to delete this playlist?");
 
