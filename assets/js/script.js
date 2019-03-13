@@ -89,7 +89,7 @@ function removeFromPlaylist(button, playlistID) {
 			return;
 		}
 		// open openMusic.php (which the page we're already on, so it's essentially a refresh)
-		openPage("playlist.phpid=" + playlistID);
+		openPage("playlist.php?id=" + playlistID);
 	});
 
 }
