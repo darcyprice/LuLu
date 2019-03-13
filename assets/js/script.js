@@ -29,10 +29,28 @@ $(window).scroll(function() {
 
 // function will be fired everytime the select.playlist dropdown menu changes
 $(document).on("onchage", "select.playlist", function() {
+	// create a jQuery object with this (to be used below)
+	var select = $(this);
 	// 'this' refers to the element which the event was fired on (this is case: "select.playlist")
 	var playlistID = $(this).val();
 	// 'prev' goes up the document object model to find the immediate ancestor in the html doc
 	var songID = $(this).prev(."songID").val();
+
+	$.post(
+		"includes/handlers/ajax/addToPlaylist.php",
+		{ playlistID: playlistID, songID: songID}
+	).done(function() {
+		// if there's any errors, alert them
+		if (error != "") {
+			alert(error);
+			return;
+		}
+		// close the options menu
+		hideOptionsMenu();
+		// set the playlist ID back to an empty value
+		// set the value to blank
+		select.val("");
+	});
 });
 
 function openPage(url) {
