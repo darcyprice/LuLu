@@ -69,8 +69,6 @@ $artist = $album->getArtist();
 <nav class="optionsMenu">
 	<input type="hidden" class="songID">
 	<?php echo Playlist::getPlaylistsDropdown($con, $userLoggedIn->getUsername()); ?>
-	<div class="item">Option 2</div>
-	<div class="item">Option 3</div>
 </nav>
 
 <?php include("includes/footer.php"); ?>
