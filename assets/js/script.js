@@ -73,6 +73,27 @@ function openPage(url) {
 	history.pushState(null, null, url);
 }
 
+// button is the 'optionsButton that has been pressed'
+function removeFromPlaylist(button, playlistID) {
+	// 'prevAll' will go up multiple ancestors to find the match in the html doc
+	var songID = $(button).prevAll(".songID").val();
+	// ajax call
+	$.post(
+		"includes/handlers/ajax/removeFromPlaylist.php",
+		{ playlistID : playlistID, songID: songID }
+	)
+	// .done() executes when the ajax call is completed
+	.done(function(error) {
+		if (error != "") {
+			alert(error);
+			return;
+		}
+		// open openMusic.php (which the page we're already on, so it's essentially a refresh)
+		openPage("playlist.phpid=" + playlistID);
+	});
+
+}
+
 function createPlaylist() {
 	var popup = prompt("Enter name of the playlist");
 
