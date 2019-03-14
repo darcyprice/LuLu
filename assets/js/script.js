@@ -1,3 +1,4 @@
+
 var currentPlaylist = [];
 var shufflePlaylist = [];
 var tempPlaylist = [];
@@ -17,14 +18,36 @@ $(document).click(function(click) {
 	if (!target.hasClass("item") && !target.hasClass("optionsButton")) {
 		hideOptionsMenu();
 	}
-
-
 });
 
 // event: if the User scrolls on the page
 $(window).scroll(function() {
 	// call hideOptionsMenu() function
 	hideOptionsMenu();
+});
+
+// function will be fired everytime the select.playlist dropdown menu changes
+$(document).on("change", "select.playlist", function() {
+	// create a jQuery object with this (to be used below)
+	var select = $(this);
+	// 'this' refers to the element which the event was fired on (this is case: "select.playlist")
+	var playlistID = $(this).val();
+	// 'prev' goes up the document object model to find the immediate ancestor in the html doc
+	var songID = $(this).prev(".songID").val();
+
+	$.post("includes/handlers/ajax/addToPlaylist.php", { playlistID: playlistID, songID: songID}
+	).done(function(error) {
+		// if there's any errors, alert them
+		if (error != "") {
+			alert(error);
+			return;
+		}
+		// close the options menu
+		hideOptionsMenu();
+		// set the playlist ID back to an empty value
+		// set the value to blank
+		select.val("");
+	});
 });
 
 function openPage(url) {
@@ -45,6 +68,27 @@ function openPage(url) {
 	// inserts the url into the history (so that the user thinks the url has actually
 	// changed, when, instead, ajax has merely changed the container)
 	history.pushState(null, null, url);
+}
+
+// button is the 'optionsButton that has been pressed'
+function removeFromPlaylist(button, playlistID) {
+	// 'prevAll' will go up multiple ancestors to find the match in the html doc
+	var songID = $(button).prevAll(".songID").val();
+	// ajax call
+	$.post(
+		"includes/handlers/ajax/removeFromPlaylist.php",
+		{ playlistID : playlistID, songID: songID }
+	)
+	// .done() executes when the ajax call is completed
+	.done(function(error) {
+		if (error != "") {
+			alert(error);
+			return;
+		}
+		// open openMusic.php (which the page we're already on, so it's essentially a refresh)
+		openPage("playlist.php?id=" + playlistID);
+	});
+
 }
 
 function createPlaylist() {
@@ -80,8 +124,14 @@ function hideOptionsMenu() {
 // function to ensure that optionsMenu button appears in line with each <li class='trackListRow'>
 // to do that, need to get the position of each trackListRow on the screen
 function showOptionsMenu(button) {
+	// everytime the songID menu is shown,
+	// 'prevAll' will go up multiple ancestors to find the match in the html doc
+	var songID = $(button).prevAll(".songID").val();
 	var menu = $(".optionsMenu");
 	var menuWith = menu.width();
+	// finds the value of the songID item from the menu (which = ".optionsMenu")
+	menu.find(".songID").val(songID);
+
 	// distance from top of window to top of document
 	var scrollTop = $(window).scrollTop();
 	// distance from top of document
@@ -92,8 +142,8 @@ function showOptionsMenu(button) {
 	var left = $(button).position().left;
 	// add css to menu (which is .optionsMenu)
 	menu.css({ "top": top + "px", "left": left - menuWith + "px", "display": "inline" })
- 
-  
+}
+
  function deletePlaylist(playlistID) {
 	var prompt = confirm("Are you sure you want to delete this playlist?");
 
