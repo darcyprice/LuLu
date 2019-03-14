@@ -1,3 +1,4 @@
+
 var currentPlaylist = [];
 var shufflePlaylist = [];
 var tempPlaylist = [];
@@ -17,8 +18,6 @@ $(document).click(function(click) {
 	if (!target.hasClass("item") && !target.hasClass("optionsButton")) {
 		hideOptionsMenu();
 	}
-
-
 });
 
 // event: if the User scrolls on the page
@@ -28,18 +27,16 @@ $(window).scroll(function() {
 });
 
 // function will be fired everytime the select.playlist dropdown menu changes
-$(document).on("onchage", "select.playlist", function() {
+$(document).on("change", "select.playlist", function() {
 	// create a jQuery object with this (to be used below)
 	var select = $(this);
 	// 'this' refers to the element which the event was fired on (this is case: "select.playlist")
 	var playlistID = $(this).val();
 	// 'prev' goes up the document object model to find the immediate ancestor in the html doc
-	var songID = $(this).prev(."songID").val();
+	var songID = $(this).prev(".songID").val();
 
-	$.post(
-		"includes/handlers/ajax/addToPlaylist.php",
-		{ playlistID: playlistID, songID: songID}
-	).done(function() {
+	$.post("includes/handlers/ajax/addToPlaylist.php", { playlistID: playlistID, songID: songID}
+	).done(function(error) {
 		// if there's any errors, alert them
 		if (error != "") {
 			alert(error);
@@ -145,7 +142,7 @@ function showOptionsMenu(button) {
 	var left = $(button).position().left;
 	// add css to menu (which is .optionsMenu)
 	menu.css({ "top": top + "px", "left": left - menuWith + "px", "display": "inline" })
-
+}
 
  function deletePlaylist(playlistID) {
 	var prompt = confirm("Are you sure you want to delete this playlist?");

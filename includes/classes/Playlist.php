@@ -62,13 +62,14 @@
 			$dropdown = '<select class="item playlist">
 							<option value="">Add to playlist</option>';
 			// fetch all playlists associated with userLoggedIn
-			$sql = "SELECT id, name FROM Playlists
-					WHERE owner = '$username'";
+			$sql = "SELECT playlistID, playlistName
+					FROM Playlists
+					WHERE playlistOwner = '$username'";
 			$query = mysqli_query($con, $sql);
 			// iterate over each row in the query
 			while ($row = mysqli_fetch_array($query)) {
-				$id = $row['id'];
-				$name = $row['name'];
+				$id = $row['playlistID'];
+				$name = $row['playlistName'];
 				// append the $row as an option to the select tag
 				$dropdown = $dropdown . "<option value='$id'>$name</option>";
 			}

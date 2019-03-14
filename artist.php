@@ -55,7 +55,7 @@ $artist = new Artist($con, $artistID);
 							<span class='artistName'>" . $albumArtist->getName() . "</span>
 						</div>
 						<div class='trackOptions'>
-							<input type='hidden' class='songID' value='" . $albumSong->getID() . "'
+							<input type='hidden' class='songID' value='" . $albumSong->getID() . "'>
 							<img class='optionsButton' src='assets/images/icons/more.png' onclick='showOptionsMenu(this)' alt='optionsButton'>
 						</div>
 						<div class='trackDuration'>
