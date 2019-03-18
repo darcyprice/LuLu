@@ -490,3 +490,7 @@ input:focus {
 	background-color: #333;
 	border-color: #333;
 }
+
+.userInfo h1 {
+	text-align: center;
+}

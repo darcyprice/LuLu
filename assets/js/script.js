@@ -195,49 +195,43 @@ function playFirstSong() {
 
 
 function Audio() {
-
 	this.currentlyPlaying;
 	// "this.audio" is the property of the Class. It's the same as self.name = name ?
 	// "document.createElement('audio')" creates an HTML element which, in this case, is a built-in HTML audio element
 	this.audio = document.createElement('audio');
-
 	this.audio.addEventListener("canplay", function() {
 		// 'this' refers to the object that event was called on (which in this case, is 'audio')
 		var duration = formatTime(this.duration);
 		// update the HTML tag with the duration of the song
 		$(".progressTime.remaining").text(duration);
 	});
-
 	this.audio.addEventListener("ended", function() {
 		nextSong();
 	});
-
 	this.audio.addEventListener("timeupdate", function() {
 		if(this.duration) {
 			updateTimeProgressBar(this);
 		}
 	});
-
 	this.audio.addEventListener("volumechange", function() {
 		updateVolumeProgressBar(this);
 	});
-
 	// takes the JSON object 'track' as a parameter
 	this.setTrack = function(track) {
 		this.currentlyPlaying = track;
 		this.audio.src = track.path;
 	}
-
 	this.play = function() {
 		this.audio.play();
 	}
-
 	this.pause = function() {
 		this.audio.pause();
 	}
-
 	this.setTime = function(seconds) {
 		this.audio.currentTime = seconds;
 	}
+}
 
+function logout() {
+	
 }
