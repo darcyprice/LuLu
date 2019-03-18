@@ -20,7 +20,7 @@
             $this->id = $data['playlistID'];
             $this->playlistName = $data['playlistName'];
             $this->playlistOwner = $data['playlistOwner'];
-            $this->$dateCreated = $data['$dateCreated'];
+            $this->dateCreated = $data['$dateCreated'];
 		}
 
         public function getID() {
