@@ -1,17 +1,19 @@
 <?php
-
 include("includes/config.php");
+include("includes/classes/User.php");
 include("includes/classes/Artist.php");
 include("includes/classes/Album.php");
 include("includes/classes/Song.php");
+include("includes/classes/Playlist.php");
 
-/* to prevent the user from accessing index.php until they register/login */
-if(isset($_SESSION['userLoggedIn'])) { // check if session variable is set. that is, if user is already logged in
-	$userLoggedIn = $_SESSION['userLoggedIn']; // if yes, create a variable that contains the user's username
-	// store the username of the userLoggedIn as a JS variable
-	echo "<script>userLoggedIn = '$userLoggedIn';</script>";
+// prevent User from accessing site until they register/login
+if (isset($_SESSION['userLoggedIn'])) {
+	$userLoggedIn = new User($con, $_SESSION['userLoggedIn']);
+	$username = $userLoggedIn->getUsername();
+	echo "<script>userLoggedIn = '$username';</script>";
 } else {
-	header("Location: register.php"); // if no, direct to register.php. That is, prevent the user from accessing index.php until they log in
+	// prevent the user from accessing index.php until they log in
+	header("Location: register.php");
 }
 
 ?>

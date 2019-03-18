@@ -13,6 +13,14 @@
             return $this->username;
         }
 
+		public function getEmail() {
+			$sql = "SELECT email FROM Users
+					WHERE username = '$this->username'";
+			$query = mysqli_query($this->con, $sql);
+			$row = mysqli_fetch_array($query);
+			return $row['email'];
+		}
+
 		// function to get User's first and last name
 		public function getFullName() {
 			$sql = "SELECT concat(firstName, ' ', lastName) as 'fullName'

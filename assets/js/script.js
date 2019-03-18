@@ -232,6 +232,35 @@ function Audio() {
 	}
 }
 
+// logout with an ajax call
 function logout() {
-	
+	$.post("includes/handlers/ajax/logout.php", function() {
+		// when the ajax call is successful, reload the page
+		location.reload();
+	});
+}
+
+function updateEmail(emailClass) {
+	var emailValue = $("." + emailClass).val();
+
+	$.post("includes/handlers/ajax/updateEmail.php", { email: emailValue, username: userLoggedIn })
+	.done(function(response) {
+		// update the span element with the class message (fe, "Email updated")
+		$("." + emailClass).nextAll(".message").text(response);
+	});
+}
+
+function updatePassword(oldPasswordClass, newPasswordClass1, newPasswordClass2) {
+	var oldPassword = $("." + oldPasswordClass).val();
+	var newPassword1 = $("." + newPasswordClass1).val();
+	var newPassword2 = $("." + newPasswordClass2).val();
+
+	$.post("includes/handlers/ajax/updatePassword.php",
+	{oldPassword: oldPassword,
+	newPassword1: newPassword1,
+	newPassword2: newPassword2})
+	.done(function(response) {
+		// update the span element with the class message (fe, "Email updated")
+		$("." + oldPasswordClass).nextAll(".message").text(response);
+	});
 }
