@@ -256,7 +256,8 @@ function updatePassword(oldPasswordClass, newPasswordClass1, newPasswordClass2) 
 	var newPassword2 = $("." + newPasswordClass2).val();
 
 	$.post("includes/handlers/ajax/updatePassword.php",
-	{oldPassword: oldPassword,
+	{username: userLoggedIn,
+	oldPassword: oldPassword,
 	newPassword1: newPassword1,
 	newPassword2: newPassword2})
 	.done(function(response) {
