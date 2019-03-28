@@ -7,6 +7,10 @@ if(isset($_GET['term'])) {
 else {
   $term = "";
 }
+
+$db = MyPDO::instance();
+// // BUG: 'the Beatles' isn't showing up in artist search
+// BUG: searches longer than 2 characters aren't working
 ?>
 
 <!-- HTML element for searchInput -->
@@ -53,16 +57,17 @@ if($term == "") exit();
   <ul class="trackList">
     <?php
     // select all songs with term included
-    $songsQuery = mysqli_query($con, "SELECT songID FROM Songs WHERE songTitle LIKE '%$term%'");
-    // if no results returned, print message
-    if(mysqli_num_rows($songsQuery) == 0) {
-      echo "<span class='noResults'> No songs found matching " . $term . "</span>";
+    $sql = "SELECT songID FROM Songs
+            WHERE songTitle LIKE CONCAT('%', ?, '%')";
+    $stmt = $db->run($sql, [$term]);
+    if ($stmt->fetch(PDO::FETCH_ASSOC) == 0) {
+        echo "<span class='noResults'> No songs found matching " . $term . "</span>";
     }
 
     $songIDArray = array();
     // counter for row number
     $c = 1;
-    while($row = mysqli_fetch_array($songsQuery)) {
+    while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
       // limit to 15 results
       if($c > 15) {
         break;
@@ -111,13 +116,14 @@ if($term == "") exit();
     <h2>ARTISTS</h2>
     <?php
     // select all artists with term included
-    $artistsQuery = mysqli_query($con, "SELECT artistID FROM Artists WHERE artistName LIKE '%$term%'");
-    // if no results returned, print message
-    if(mysqli_num_rows($artistsQuery) == 0) {
+    $sql = "SELECT artistID FROM Artists
+            WHERE artistName LIKE CONCAT('%', ?, '%')";
+    $stmt = $db->run($sql, [$term]);
+    if ($stmt->fetch(PDO::FETCH_ASSOC) == 0) {
         echo "<span class='noResults'> No artists found matching " . $term . "</span>";
     }
 
-    while($row = mysqli_fetch_array($artistsQuery)) {
+    while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $artistFound = new Artist($con, $row['artistID']);
 
         echo "<div class='searchResultRow'>
@@ -135,13 +141,13 @@ if($term == "") exit();
 	<h2>ALBUMS</h2>
 	<?php
         // select all artists with term included
-		$albumQuery = mysqli_query($con, "SELECT * FROM Albums WHERE albumTitle LIKE '%$term%'");
-        // if no results returned, print message
-        if(mysqli_num_rows($artistsQuery) == 0) {
+        $sql = "SELECT * FROM Albums
+                WHERE albumTitle LIKE CONCAT('%', ?, '%')";
+        $stmt = $db->run($sql, [$term]);
+        if ($stmt->fetch(PDO::FETCH_ASSOC) == 0) {
             echo "<span class='noResults'> No albums found matching " . $term . "</span>";
         }
-
-		while($row = mysqli_fetch_array($albumQuery)) {
+		while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 			// create an html div element each time it loops through the queryset
 			echo "<div class='gridViewItem'>
 					<span role='link' tabindex='0' onclick='openPage(\"album.php?albumID=" . $row['albumID'] . "\")'>

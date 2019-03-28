@@ -1,5 +1,8 @@
 <?php
 include("../../config.php");
+include("../../classes/MyPDO.php");
+
+$db = MyPDO::instance();
 
 if (!isset($_POST['username'])) {
     echo "Sorry, username not found";
@@ -26,11 +29,12 @@ if (isset($_POST['oldPassword'], $_POST['newPassword1'], $_POST['newPassword2'])
     // encrypt the password (necessary because DB passwords are encrpyted)
     $oldMd5 = md5($oldPassword);
     // check if old password is correct
-    $sql = "SELECT * FROM users
-            WHERE username = '$username'
-            AND password = '$oldMd5'";
-    $query = mysqli_query($con, $sql);
-    if (mysqli_num_rows($query) != 1) {
+    $sql = "SELECT username, password FROM Users
+            WHERE username = ?
+            AND password = ?";
+    $stmt = $db->run($sql, [$username, $oldMd5]);
+
+    if ($stmt->fetch(PDO::FETCH_ASSOC) == 0) {
         echo "Password is incorrect";
         exit();
     }
@@ -50,12 +54,12 @@ if (isset($_POST['oldPassword'], $_POST['newPassword1'], $_POST['newPassword2'])
         exit();
     }
 
+    // all tests have passed, update password in db
     $newMd5 = md5($newPassword1);
-
-    $sql = "UPDATE Users SET password = '$newMd5'
-            WHERE username = '$username'";
-    $query = mysqli_query($con, $sql);
-    // success message
+    $sql = "UPDATE Users
+            SET password = ?
+            WHERE username = ?";
+    $stmt = $db->run($sql, [$newMd5, $username]);
     echo "Password updated";
 }
 ?>

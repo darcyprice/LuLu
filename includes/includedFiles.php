@@ -6,6 +6,7 @@
 // check whether the url request was from ajax
 if(isset($_SERVER['HTTP_X_REQUESTED_WITH'])) {
     include("includes/config.php");
+    include("includes/classes/MyPDO.php");
     include("includes/classes/User.php");
     include("includes/classes/Artist.php");
     include("includes/classes/Album.php");
