@@ -1,14 +1,19 @@
 <?php
 include("../../config.php");
+include("../../classes/MyPDO.php");
+
+$db = MyPDO::instance();
 
 if (isset($_POST['playlistID'])) {
     $playlistID = $_POST['playlistID'];
 
-    $playlist_sql = "DELETE FROM Playlists WHERE playlistID = '$playlistID'";
-    $songs_sql = "DELETE FROM PlaylistSongs WHERE playlistSongsID = '$playlistID'";
+    // delete Playlist
+    $sql = "DELETE FROM Playlists WHERE playlistID = ?";
+    $stmt = $db->run($sql, [$playlistID]);
 
-    $playlist_query = mysqli_query($con, $playlist_sql);
-    $songs_query = mysqli_query($con, $songs_sql);
+    // delete PlaylistSongs linked the (now) deleted Playlist
+    $sql = "DELETE FROM PlaylistSongs WHERE playlistID = ?";
+    $stmt = $db->run($sql, [$playlistID]);
 } else {
     echo "Name or Username parameters not passed into file";
 }

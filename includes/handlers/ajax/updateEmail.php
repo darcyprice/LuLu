@@ -1,5 +1,8 @@
 <?php
 include("../../config.php");
+include("../../classes/MyPDO.php");
+
+$db = MyPDO::instance();
 
 if (isset($_POST['email'], $_POST['username']) && $_POST['email'] != "") {
 	$email = $_POST['email'];
@@ -13,19 +16,21 @@ if (isset($_POST['email'], $_POST['username']) && $_POST['email'] != "") {
     }
 
     // check email is unique
-    $sql = "SELECT email FROM Users
-            WHERE email = '$email'
-            AND username != '$username'";
-    $emailCheck = mysqli_query($con, $sql);
-    if (mysqli_num_rows($emailCheck) > 0) {
-        echo "Sorry, email is already taken";
-        exit();
-    }
+	$sql = "SELECT email FROM Users
+			WHERE email = ?
+			AND username != ?";
+	$stmt = $db->run($sql, [$email, $username]);
 
-	$sql = "UPDATE Users SET email = '$email'
-            WHERE username = '$username'";
-	$updateQuery = mysqli_query($con, $sql);
-
-    echo "Update successful";
+	if ($stmt->fetch(PDO::FETCH_ASSOC) != 0) {
+		echo "Sorry, email is already taken";
+		exit();
+	} else {
+		// update the email in db
+		$sql = "UPDATE Users
+				SET email = ?
+				WHERE username = ?";
+		$stmt = $db->run($sql, [$email, $username]);
+		echo "Update successful";
+	}
 }
 ?>

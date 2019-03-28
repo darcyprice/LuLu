@@ -1,15 +1,16 @@
 <?php
-
 include("../../config.php");
+include("../../classes/MyPDO.php");
+
+$db = MyPDO::instance();
 
 if(isset($_POST['songID'])) {
 	$songID = $_POST['songID'];
 
-	$query = mysqli_query($con, "SELECT * FROM Songs WHERE songID='$songID'");
+	$sql = "SELECT * FROM Songs WHERE songID = ?";
+	$stmt = $db->run($sql, [$songID]);
 
-	$resultArray = mysqli_fetch_array($query);
-
+	$resultArray = $stmt->fetch(PDO::FETCH_ASSOC);
 	echo json_encode($resultArray);
-} 
-
+}
 ?>

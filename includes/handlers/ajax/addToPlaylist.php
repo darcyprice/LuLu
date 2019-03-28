@@ -1,5 +1,8 @@
 <?php
 include("../../config.php");
+include("../../classes/MyPDO.php");
+
+$db = MyPDO::instance();
 
 if (isset($_POST['playlistID']) && isset($_POST['songID'])) {
     $playlistID = $_POST['playlistID'];
@@ -9,15 +12,19 @@ if (isset($_POST['playlistID']) && isset($_POST['songID'])) {
     // BUG: when playlist has no songs in it, there is no max
     $sql = "SELECT MAX(playlistOrder) + 1 AS playlistOrder
             FROM PlaylistSongs
-            WHERE playlistID = '$playlistID'";
-    $orderIDQuery = mysqli_query($con, $sql);
-    $row = mysqli_fetch_array($orderIDQuery);
+            WHERE playlistID = ?";
+    $stmt = $db->run($sql, [$playlistID]);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
     $order = $row['playlistOrder'];
-
+    // if $order is null (because the playlist currently has no songs in it)
+    // then set $order to 1
+    if (is_null($order)) {
+        $order = 1;
+    }
     // insert song into playlist (with playlistOrder)
     $sql = "INSERT INTO PlaylistSongs
-            VALUES(playlistSongsID, '$songID', '$playlistID', '$order')";
-    $query = mysqli_query($con, $sql);
+            VALUES (playlistSongsID, ?, ?, ?)";
+    $stmt = $db->run($sql, [$songID, $playlistID, $order]);
 } else {
     echo "playlistID or songID was not passed into addToPlaylist.php";
 }

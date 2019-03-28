@@ -1,6 +1,7 @@
 <?php
 	class Song {
 
+		protected $db;
 		private $con;
 		private $mysqliData;
 		private $songID;
@@ -13,16 +14,15 @@
 		private $albumOrder;
 
 		public function __construct($con, $songID) {
+			$this->db = MyPDO::instance();
 			$this->con = $con;
 			$this->songID = $songID;
 
-			$songQuery = mysqli_query($this->con,
-				"SELECT * FROM Songs WHERE songID='$this->songID'"
-			);
-
-			$this->mysqliData = mysqli_fetch_array($songQuery); // used for later when we play songs
-
-			// $song = mysqli_fetch_query($songQuery); // REMOVED AS WASN'T IN TEACHER'S EXAMPLE
+			$sql = "SELECT * FROM Songs WHERE songID = ?";
+			$stmt = $this->db->run($sql, [$this->songID]);
+			$songQuery = $stmt->fetch(PDO::FETCH_ASSOC);
+			// to be used later when we play songs
+			$this->mysqliData = $songQuery;
 
 			$this->songTitle = $this->mysqliData['songTitle'];
 			$this->songArtist = $this->mysqliData['songArtist'];

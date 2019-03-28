@@ -10,6 +10,7 @@ else {
 }
 
 $artist = new Artist($con, $artistID);
+$db = MyPDO::instance();
 ?>
 
 <div class="entityInfo borderBottom">
@@ -80,21 +81,24 @@ $artist = new Artist($con, $artistID);
 <div class="gridViewContainer">
 	<h2>ALBUMS</h2>
 	<?php
-		$albumQuery = mysqli_query($con, "SELECT * FROM Albums WHERE albumArtist='$artistID' LIMIT 10");
+	$sql = "SELECT * FROM Albums
+			WHERE albumArtist = ?
+			LIMIT 10";
+	$stmt = $db->run($sql, [$artistID]);
 
-		while($row = mysqli_fetch_array($albumQuery)) {
-			// create an html div element each time it loops through the queryset
-			echo "<div class='gridViewItem'>
-					<span role='link' tabindex='0' onclick='openPage(\"album.php?albumID=" . $row['albumID'] . "\")'>
-						<img src='" . $row['artworkPath'] . "'>
+	while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+		// create an html div element each time it loops through the queryset
+		echo "<div class='gridViewItem'>
+				<span role='link' tabindex='0' onclick='openPage(\"album.php?albumID=" . $row['albumID'] . "\")'>
+					<img src='" . $row['artworkPath'] . "'>
 
-						<div class='gridViewInfo'>"
-							. $row['albumTitle'] .
-						"</div>
-					</span>
+					<div class='gridViewInfo'>"
+						. $row['albumTitle'] .
+					"</div>
+				</span>
 
-				</div>";
-		}
+			</div>";
+	}
 	?>
 </div>
 
