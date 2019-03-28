@@ -2,6 +2,7 @@
 	class Album {
 
 		private $con;
+		protected $db;
 		private $albumID;
 		private $albumTitle;
 		private $artistID;
@@ -9,10 +10,13 @@
 
 		public function __construct($con, $albumID) {
 			$this->con = $con;
+			$this->db = MyPDO::instance();
 			$this->albumID = $albumID;
 
-			$albumQuery = mysqli_query($this->con, "SELECT * FROM Albums WHERE albumID='$this->albumID'");
-			$album = mysqli_fetch_array($albumQuery);
+			$sql = "SELECT * FROM Albums
+					WHERE albumID = ?";
+			$stmt = $this->db->run($sql, [$this->albumID]);
+			$album = $stmt->fetch(PDO::FETCH_ASSOC);
 
 			$this->albumTitle = $album['albumTitle'];
 			$this->artistID = $album['albumArtist'];
@@ -35,33 +39,22 @@
 
 		public function getNumberOfSongs() {
 			// return the number of songs in the album
-			$query = mysqli_query($this->con,
-				"SELECT songID FROM Songs WHERE songAlbum='$this->albumID'"
-			);
-			return mysqli_num_rows($query);
+			$sql = "SELECT songID FROM Songs
+					WHERE songAlbum = ?";
+			$stmt = $this->db->run($sql, [$this->albumID]);
+			return $stmt->rowCount();
 		}
 
 		public function getSongIDs() {
-			$query = mysqli_query($this->con, "SELECT songID FROM Songs WHERE songAlbum='$this->albumID' ORDER BY albumOrder ASC");
-			$array = array(); // create an array to hold all the songIDs
-			while($row = mysqli_fetch_array($query)) {
-				array_push($array, $row['songID']);
-			}
-			return $array;
-		}
-
-		public function ORIGINAL_getSongIDs() {
-			$query = mysqli_query($this->con,
-				"SELECT songID FROM Songs WHERE songAlbum='$this->albumID' ORDER BY albumOrder ASC"
-			);
-
-			// create an array that holds all the IDs
+			$sql = "SELECT songID FROM Songs
+					WHERE songAlbum = ?
+					ORDER BY albumOrder ASC";
+			$stmt = $this->db->run($sql, [$this->albumID]);
 			$array = array();
-			while($row = mysqli_fetch_array($query)) {
+			while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 				array_push($array, $row['songID']);
 			}
 			return $array;
 		}
-
 	}
 ?>

@@ -3,23 +3,25 @@
 
 		private $con;
 		private $errorArray;
+		protected $db;
 
-		public function __construct($con) { // $con connects the db to the class
+		public function __construct($con) {
 			$this->con = $con;
+			$this->db = MyPDO::instance();
 			$this->errorArray = array();
 		}
 
 		public function login($un, $pw) {
-
 			$pw = md5($pw); // encycrpt the pw
-
-			$query = mysqli_query($this->con, "SELECT * FROM Users WHERE username='$un' AND password='$pw'"); // get all rows with same un and pw
-
-			if(mysqli_num_rows($query) == 1) { // if un and pw combination is found (and is unique) in db
+			$sql = "SELECT * FROM Users
+					WHERE username = ? AND password = ?";
+			$query = $this->db->run($sql, [$un, $pw]);
+			// check if un and pw combination are unique in db
+			if ($query->rowCount() == 1) {
 				return true;
-			}
-			else {
-				array_push($this->errorArray, Constants::$loginFailed); // push error message to array
+			} else {
+				// if not, push error message to array
+				array_push($this->errorArray, Constants::$loginFailed);
 				return false;
 			}
 		}
@@ -42,7 +44,7 @@
 		}
 
 		public function getError($error) {
-			/* 
+			/*
 			if user attempts to register and returns an error, print the error message associated with that error on the registration screen.
 			*/
 			if(!in_array($error, $this->errorArray)) { // checks if $error NOT exists in the erroryArray
@@ -56,10 +58,15 @@
 			$profilePic = "assets/images/profile-pics/default_profile_pic.png";
 			$date = date("Y-m-d");
 
-			// insert the values into the db
-			// mqsli_query returns TRUE if it's successful, FALSE if otherwise
-			$result = mysqli_query($this->con, "INSERT INTO Users VALUES (userID, '$un', '$fn', '$ln', '$em', '$encryptedPw', '$date', '$profilePic')");
+			$sql = "INSERT INTO Users
+					VALUES (userID, ?, ?, ?, ?, ?, ?, ?)";
+			$query = $this->db->run($sql, [$un, $fn, $ln, $em, $encryptedPw, $date, $profilePic]);
 
+			if ($query->rowCount() == 1) {
+				$result = true;
+			} else {
+				$result = false;
+			}
 			return $result;
 		}
 
@@ -74,9 +81,11 @@
 			}
 
 			// checks if username exists
-			$checkUsernameQuery = mysqli_query($this->con, "SELECT username FROM Users WHERE username='$un'"); // check if the username already exists in db
-			if(mysqli_num_rows($checkUsernameQuery) != 0) { // if the username does exist
-				array_push($this->errorArray, Constants::$usernameTaken); // send the error message to the array
+			$sql = "SELECT username FROM Users
+					WHERE username = ?";
+			$query = $this->db->run($sql, [$un]);
+			if ($query->rowCount() != 0) {
+				array_push($this->errorArray, Constants::$usernameTaken);
 				return;
 			}
 
@@ -108,12 +117,13 @@
 			}
 
 			// checks if email exists
-			$checkEmailQuery = mysqli_query($this->con, "SELECT email FROM Users WHERE email='$em'"); // check if the username already exists in db
-			if(mysqli_num_rows($checkEmailQuery) != 0) { // if the username does exist
-				array_push($this->errorArray, Constants::$emailTaken); // send the error message to the array
+			$sql = "SELECT email FROM Users
+					WHERE email = ?";
+			$query = $this->db->run($sql, [$em]);
+			if ($query->rowCount() != 0) {
+				array_push($this->errorArray, Constants::$emailTaken);
 				return;
 			}
-
 		}
 
 		private function validatePasswords($pw, $pw2) {

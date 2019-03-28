@@ -2,20 +2,21 @@
 	class Playlist {
 
 		private $con;
+		protected $db;
         private $id;
         private $playlistName;
         private $playistOwner;
         private $dateCreated;
 
 		public function __construct($con, $data) {
+			$this->db = MyPDO::instance();
 			// if $data is NOT an array (ie, it's playlistID)
 			// convert it into an using using playlistID to fetch from db
 			if (! is_array($data)) {
-				$sql = "SELECT * FROM Playlists WHERE playlistID='$data'";
-				$query = mysqli_query($con, $sql);
-				$data = mysqli_fetch_array($query);
+				$sql = "SELECT * FROM Playlists WHERE playlistID = ?";
+				$stmt = $this->db->run($sql, [$data]);
+				$data = $stmt->fetch(PDO::FETCH_ASSOC);
 			}
-
 			$this->con = $con;
             $this->id = $data['playlistID'];
             $this->playlistName = $data['playlistName'];
@@ -40,16 +41,19 @@
         }
 
 		public function getNumberOfSongs() {
-			$sql = "SELECT songID FROM PlaylistSongs WHERE playlistID='$this->id'";
-			$query = mysqli_query($this->con, $sql);
-			return mysqli_num_rows($query);
+			$sql = "SELECT songID FROM PlaylistSongs
+					WHERE playlistID = ?";
+			$stmt = $this->db->run($sql, [$this->id]);
+			return $stmt->rowCount();
 		}
 
 		public function getSongIDs() {
-			$sql = "SELECT songID FROM PlaylistSongs WHERE playlistID='$this->id' ORDER BY playlistOrder ASC";
-			$query = mysqli_query($this->con, $sql);
-			$array = array(); // create an array to hold all the songIDs
-			while($row = mysqli_fetch_array($query)) {
+			$sql = "SELECT songID FROM PlaylistSongs
+					WHERE playlistID = ?
+					ORDER BY playlistOrder ASC";
+			$stmt = $this->db->run($sql, [$this->id]);
+			$array = array();
+			while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 				array_push($array, $row['songID']);
 			}
 			return $array;
@@ -61,6 +65,7 @@
 		public static function getPlaylistsDropdown($con, $username) {
 			$dropdown = '<select class="item playlist">
 							<option value="">Add to playlist</option>';
+			// BUG: convert to PDO (challenge is that it is a static function, so how to pass $this->db into static function??)
 			// fetch all playlists associated with userLoggedIn
 			$sql = "SELECT playlistID, playlistName
 					FROM Playlists
@@ -73,7 +78,6 @@
 				// append the $row as an option to the select tag
 				$dropdown = $dropdown . "<option value='$id'>$name</option>";
 			}
-
 			return $dropdown . "</select>";
 		}
 
