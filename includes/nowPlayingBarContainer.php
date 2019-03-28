@@ -2,9 +2,8 @@
 /* CREATE A PLAYLIST IN THE nowPlayingBar */
 
 // select a RANDOM set of songs from the db
-$songQuery = mysqli_query($con,
-	"SELECT songID FROM Songs ORDER BY RAND() LIMIT 10"
-);
+$sql = "SELECT songID FROM Songs ORDER BY RAND() LIMIT 10";
+$songQuery = mysqli_query($con, $sql);
 
 $resultArray = array();
 
