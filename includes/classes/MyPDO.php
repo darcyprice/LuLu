@@ -10,6 +10,7 @@ class MyPDO {
         );
         $DB_HOST = 'localhost';
         $DB_NAME = 'slotify';
+        // $DB_NAME = 'teachesl_slotify'; // siteground
         $DB_USER = 'root';
         // $DB_USER = 'teachesl_admin'; // siteground
         // $DB_PASS = 'root'; // MAMP
