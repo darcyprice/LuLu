@@ -1,29 +1,23 @@
 <?php
-/* CREATE A PLAYLIST IN THE nowPlayingBar */
-
-// select a RANDOM set of songs from the db
-$sql = "SELECT songID FROM Songs ORDER BY RAND() LIMIT 10";
+$sql = "SELECT songID FROM Songs ORDER BY RAND() LIMIT 20";
 $songQuery = mysqli_query($con, $sql);
-
 $resultArray = array();
-
-// converts the result of the query into an array
 while($row = mysqli_fetch_array($songQuery)) {
+	// converts the result of the query into an array
 	array_push($resultArray, $row['songID']);
 }
-
 // use JSON to convert the PHP array ($resultArray) into a JS array
 $jsonArray = json_encode($resultArray);
-
 ?>
 
 <!-- use JS to handle the playing and loading of music -->
 <script>
-
 $(document).ready(function() {
 	var newPlaylist = <?php echo $jsonArray; ?>;
-	audioElement = new Audio(); // the Audio Class created in script.js
-	setTrack(newPlaylist[0], newPlaylist, false); // set the track of the audioElement, using the setTrack function from below
+	// the Audio class (created in script.js)
+	audioElement = new Audio();
+	// set the track of the audioElement (using the setTrack function below)
+	setTrack(newPlaylist[0], newPlaylist, false);
 	updateVolumeProgressBar(audioElement.audio);
 
 	$('#nowPlayingBarContainer').on("mousedown touchstart mousemove touchmove", function(e) {
@@ -77,18 +71,16 @@ function timeFromOffset(mouse, progressBar) {
 }
 
 function nextSong() {
-
-	if(repeat == true) {
+	if (repeat) {
 		// if the User repeats the song, set the time of the song to 0
 		audioElement.setTime(0);
 		playSong();
 		return;
 	}
 
-	if(currentIndex == currentPlaylist.length - 1) {
+	if (currentIndex == currentPlaylist.length - 1) {
 		currentIndex = 0;
-	}
-	else {
+	} else {
 		currentIndex++;
 	}
 
@@ -124,19 +116,18 @@ function setShuffle() {
 	var imageName = shuffle ? "shuffle-active.png" : "shuffle.png"; // shorthand JS if/else statement
 	$(".controlButton.shuffle img").attr("src", "assets/images/icons/" + imageName);
 
-	if(shuffle == true) {
+	if (shuffle) {
 		// shuffle the playlist
 		shuffleArray(shufflePlaylist);
 		currentIndex = shufflePlaylist.indexOf(audioElement.currentlyPlaying.songID);
-	}
-	else {
+	} else {
 		// shuffle has been deactivated, go back to regular playlist (that is, the unshuffled playlist)
 		currentIndex = currentPlaylist.indexOf(audioElement.currentlyPlaying.songID);
 	}
 }
 
+// function to randomize an array
 function shuffleArray(a) {
-	/* function to randomize an array */
     var j, x, i;
     for (i = a.length; i; i--) {
         j = Math.floor(Math.random() * i);
@@ -147,30 +138,29 @@ function shuffleArray(a) {
 }
 
 function setTrack(trackID, newPlaylist, play) {
-
 	// if the User selects a new song, that comes with a new playlist (ie, selected a song from a different Album)
-	if(newPlaylist != currentPlaylist) {
+	if (newPlaylist != currentPlaylist) {
 		currentPlaylist = newPlaylist;
-		shufflePlaylist = currentPlaylist.slice() // .slice() creates a copy of an array
-		shuffleArray(shufflePlaylist); // shuffles the copy of currentPlaylist
+		 // .slice() creates a copy of an array
+		shufflePlaylist = currentPlaylist.slice();
+		// shuffles the copy of currentPlaylist
+		shuffleArray(shufflePlaylist);
 	}
 
-	if(shuffle == true) {
+	if (shuffle) {
 		currentIndex = shufflePlaylist.indexOf(trackID);
-	}
-	else {
+	} else {
 		currentIndex = currentPlaylist.indexOf(trackID);
 	}
 
-	pauseSong();
+	/// pauseSong();
 
-	/* AJAX call */
 	$.post("includes/handlers/ajax/getSongJson.php", { songID : trackID }, function(data) {
 		// parse the data to convert it into an object
 		var track = JSON.parse(data);
 		// automatically update the html element with the songTitle of track currently playing
-		$(".trackName span").text(track.songTitle);
-		// use an AJAX call to retrieve the artistName from the song curretly playing
+		$(" .trackName span").text(track.songTitle);
+		// use AJAX to retrieve the artistName of the song curretly playing
 		$.post("includes/handlers/ajax/getArtistJson.php", { artistID : track.songArtist }, function(data) {
 			var artist = JSON.parse(data);
 			// automatically update the html element with the artistName of track currently playing
@@ -178,7 +168,7 @@ function setTrack(trackID, newPlaylist, play) {
 			// include onclick(openPage('artist.php...')) to span element
 			$(".trackInfo .artistName span").attr("onclick", "openPage('artist.php?artistID=" + artist.artistID + "')");
 		});
-		// use an AJAX call to retrieve the albumArtwork from the song curretly playing
+		// use AJAX to retrieve the albumArtwork of the song curretly playing
 		$.post("includes/handlers/ajax/getAlbumJson.php", { albumID : track.songAlbum }, function(data) {
 			var album = JSON.parse(data);
 			// automatically update the html element with the artistName of track currently playing
@@ -191,20 +181,17 @@ function setTrack(trackID, newPlaylist, play) {
 
 		audioElement.setTrack(track);
 
-		if(play == true) {
+		if (play) {
 			playSong();
 		}
 	});
 }
 
 function playSong() {
-
-	// only update the play count if the time is 0 (as then a new song is being played) (that is, don't include times when we hit play, pause, play)
-	// IDEA: change this to be if the time > 10
+	// update the play count (if the time remaining == 0)
 	if(audioElement.audio.currentTime == 0) {
 		$.post("includes/handlers/ajax/updatePlays.php", { songID: audioElement.currentlyPlaying.songID });
 	}
-
 	$(".controlButton.play").hide();
 	$(".controlButton.pause").show();
 	audioElement.play();
@@ -215,9 +202,7 @@ function pauseSong() {
 	$(".controlButton.pause").hide();
 	audioElement.pause();
 }
-
 </script>
-
 
 <div id="nowPlayingBarContainer">
 	<div id="nowPlayingBar">

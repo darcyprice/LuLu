@@ -3,8 +3,7 @@ include("includes/includedFiles.php");
 
 if(isset($_GET['albumID'])) {
 	$albumID = $_GET['albumID'];
-}
-else {
+} else {
 	header("Location: index.php");
 }
 
@@ -27,7 +26,8 @@ $artist = $album->getArtist();
 	<ul class="trackList">
 		<?php
 			$songIDArray = $album->getSongIDs();
-			$i = 1; // counter for row number
+			// counter for row number
+			$i = 1;
 			foreach($songIDArray as $songID) {
 
 				$albumSong = new Song($con, $songID);
@@ -35,7 +35,7 @@ $artist = $album->getArtist();
 
 				echo "<li class='trackListRow'>
 						<div class='trackCount'>
-							<img class='play' src='assets/images/icons/play-white.png' alt='playWhiteIcon' onclick='setTrack(\"" . $albumSong->getID() . "\", tempPlaylist, true)'>
+							<img class='play' src='assets/images/icons/play-white.png' alt='playWhiteIcon' onclick='setTrack(\"".$albumSong->getID()."\", tempPlaylist, true)'>
 							<span class='trackNumber'>$i</span>
 						</div>
 						<div class='trackInfo'>
@@ -47,11 +47,11 @@ $artist = $album->getArtist();
 							<img class='optionsButton' src='assets/images/icons/more.png' onclick='showOptionsMenu(this)' alt='optionsButton'>
 						</div>
 						<div class='trackDuration'>
-							<span class='duration'>" . $albumSong->getDuration() . "</span>
+							<span class='duration'>".$albumSong->getDuration()."</span>
 						</div>
 					</li>";
-
-				$i = $i + 1; // increment the counter
+				// increment the counter
+				$i = $i + 1;
 			}
 		?>
 
@@ -62,7 +62,6 @@ $artist = $album->getArtist();
 			// used json format array to convert into an object
 			tempPlaylist = JSON.parse(tempSongIDs);
 		</script>
-
 	</ul>
 </div>
 
