@@ -1,7 +1,7 @@
 <?php
 include("includes/includedFiles.php");
 
-if(isset($_GET['albumID'])) {
+if (isset($_GET['albumID'])) {
 	$albumID = $_GET['albumID'];
 } else {
 	header("Location: index.php");
@@ -35,7 +35,10 @@ $artist = $album->getArtist();
 
 				echo "<li class='trackListRow'>
 						<div class='trackCount'>
-							<img class='play' src='assets/images/icons/play-white.png' alt='playWhiteIcon' onclick='setTrack(\"".$albumSong->getID()."\", tempPlaylist, true)'>
+							<img
+								class='play' src='assets/images/icons/play-white.png' alt='playWhiteIcon'
+								onclick='setTrack(\"".$albumSong->getID()."\", tempPlaylist, true)'
+							>
 							<span class='trackNumber'>$i</span>
 						</div>
 						<div class='trackInfo'>

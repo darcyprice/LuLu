@@ -13,31 +13,24 @@ if (isset($_SESSION['userLoggedIn'])) {
 	$username = $userLoggedIn->getUsername();
 	echo "<script>userLoggedIn = '$username';</script>";
 } else {
-	// prevent the user from accessing index.php until they log in
 	header("Location: register.php");
 }
-
 ?>
 
 <html>
 <head>
-	<title>Welcome to Slotify!</title>
+	<title>BluesMusic Online</title>
 
 	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="assets/js/script.js"></script>
-
 </head>
 
 <body>
 
 	<div id="mainContainer">
-
 		<div id="topContainer">
-
 			<?php include("includes/navBarContainer.php"); ?>
-
 			<div id="mainViewContainer">
-
 				<div id="mainContent">

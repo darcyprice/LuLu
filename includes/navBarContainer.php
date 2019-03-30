@@ -1,11 +1,8 @@
 <div id="navBarContainer">
-
 	<nav class="navBar">
-
 		<span role="link" tabindex="0" onclick="openPage('index.php')" class="logo">
 			<img src="assets/images/icons/logo.png" alt="Icon">
 		</span>
-
 		<div class="group">
 			<div class="navItem">
 				<span role='link' onclick='openPage("search.php")' class="navItemLink">
@@ -14,7 +11,6 @@
 				</span>
 			</div>
 		</div>
-
 		<div class="group">
 			<div class="navItem">
 				<span role="link" onclick="openPage('browse.php')" class="navItemLink">Browse</span>
@@ -26,7 +22,5 @@
 				<span role="link" onclick="openPage('settings.php')" class="navItemLink"><?php echo $userLoggedIn->getFullName(); ?></span>
 			</div>
 		</div>
-
 	</nav>
-
 </div>

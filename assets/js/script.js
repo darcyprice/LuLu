@@ -22,7 +22,6 @@ $(document).click(function(click) {
 
 // event: if the User scrolls on the page
 $(window).scroll(function() {
-	// call hideOptionsMenu() function
 	hideOptionsMenu();
 });
 
@@ -179,9 +178,9 @@ function playFirstSong() {
 
 function Audio() {
 	this.currentlyPlaying;
-	// "this.audio" is the property of the Class. It's the same as self.name = name ?
+	// 'this' refers to the object that event was called on (which in this case, is 'audio')
 	// "document.createElement('audio')" creates an HTML element which, in this case, is a built-in HTML audio element
-	this.audio = document.createElement('audio');
+	this.audio = document.createElement("audio");
 
 	// takes the JSON object 'track' as a parameter
 	this.setTrack = function(track) {
@@ -191,14 +190,13 @@ function Audio() {
 
 	this.play = function() {
 		this.audio.play();
-	}
+	};
 
 	this.pause = function() {
 		this.audio.pause();
-	}
+	};
 
 	this.audio.addEventListener("canplay", function() {
-		// 'this' refers to the object that event was called on (which in this case, is 'audio')
 		var duration = formatTime(this.duration);
 		// update the HTML tag with the duration of the song
 		$(".progressTime.remaining").text(duration);
@@ -220,7 +218,7 @@ function Audio() {
 
 	this.setTime = function(seconds) {
 		this.audio.currentTime = seconds;
-	}
+	};
 }
 
 // logout with an ajax call

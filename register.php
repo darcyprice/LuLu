@@ -21,7 +21,7 @@
 
 <html>
 <head>
-	<title>Welcome to Slotify!</title>
+	<title>BluesMusic Online</title>
 
 	<link rel="stylesheet" type="text/css" href="assets/css/register.css">
 
@@ -31,9 +31,8 @@
 <body>
 
 	<?php
-	/* check if the Register button was pressed. If so, output the Register form. If not, output the Login form.
-	JS can't check if Register button was pressed, only PHP can! */
-
+	// if the register-button was pressed, show the register form
+	// if not, show the login form
 	if(isset($_POST['registerButton'])) {
 		echo '<script>
 				$(document).ready(function() {
@@ -41,8 +40,7 @@
 					$("#registerForm").show();
 				});
 			</script>';
-	}
-	else {
+	} else {
 		echo '<script>
 				$(document).ready(function() {
 					$("#loginForm").show();
@@ -50,13 +48,10 @@
 				});
 			</script>';
 	}
-
 	?>
 
 	<div id="background">
-
 		<div id="loginContainer">
-
 			<div id="inputContainer">
 				<form id="loginForm" action="register.php" method="POST">
 					<h2>Login to your account</h2>
@@ -138,12 +133,12 @@
 			</div>
 
 			<div id="loginText">
-				<h1>Get great music, right now</h1>
-				<h2>Listen to loads of songs for free</h2>
+				<h1>Welcome to BluesMusic Online</h1>
+				<h2>Listen to some of Darcy's favourite albums</h2>
 				<ul>
+					<li>Search for new songs, artists or albums</li>
 					<li>Discover music you'll fall in love with</li>
 					<li>Create your own playlists</li>
-					<li>Follow artists to keep up to date</li>
 				</ul>
 			</div>
 

@@ -1,5 +1,4 @@
 <?php
-// header is included in includes/includedFiles.php
 include("includes/includedFiles.php");
 
 $db = MyPDO::instance();
@@ -24,9 +23,7 @@ $db = MyPDO::instance();
 						. $row['albumTitle'] .
 					"</div>
 				</span>
-
 			</div>";
 	}
 	?>
-
 </div>

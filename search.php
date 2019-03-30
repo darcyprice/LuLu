@@ -1,15 +1,14 @@
 <?php
 include("includes/includedFiles.php");
 
-if(isset($_GET['term'])) {
+if (isset($_GET['term'])) {
   $term = urldecode($_GET['term']);
-}
-else {
+} else {
   $term = "";
 }
 
 $db = MyPDO::instance();
-// // BUG: 'the Beatles' isn't showing up in artist search
+// BUG: 'the Beatles' isn't showing up in artist search
 // BUG: searches longer than 2 characters aren't working
 ?>
 
@@ -45,11 +44,11 @@ $(function() {
 </script>
 
 <!-- HTML element containing relevant search results from db -->
-
-
 <?php
 // if term is empty, don't search
-if($term == "") exit();
+if ($term == "") {
+    exit();
+}
 ?>
 
 <div class="trackListContainer borderBottom">
@@ -81,7 +80,7 @@ if($term == "") exit();
         <div class='trackCount'>
           <img
             class='play' src='assets/images/icons/play-white.png' alt='playWhiteIcon'
-            onclick='setTrack(\"" . $albumSong->getID() . "\", tempPlaylist, true)'
+            onclick='setTrack(\"".$albumSong->getID()."\", tempPlaylist, true)'
           >
             <span class='trackNumber'>$c</span>
         </div>

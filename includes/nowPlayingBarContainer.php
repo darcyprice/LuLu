@@ -1,5 +1,5 @@
 <?php
-$sql = "SELECT songID FROM Songs ORDER BY RAND() LIMIT 20";
+$sql = "SELECT songID FROM Songs ORDER BY RAND() LIMIT 5";
 $songQuery = mysqli_query($con, $sql);
 $resultArray = array();
 while($row = mysqli_fetch_array($songQuery)) {
@@ -29,7 +29,7 @@ $(document).ready(function() {
 	});
 
 	$(".playbackBar .progressBar").mousemove(function(e) {
-		if(mouseDown == true) {
+		if (mouseDown) {
 			// set the time of song, depending on position of the mouse
 			timeFromOffset(e, this);
 		}
@@ -44,9 +44,9 @@ $(document).ready(function() {
 	});
 
 	$(".volumeBar .progressBar").mousemove(function(e) {
-		if(mouseDown == true) {
+		if (mouseDown) {
 			var percentage = e.offsetX / $(this).width();
-			if(percentage >= 0 && percentage <= 1) {
+			if (percentage >= 0 && percentage <= 1) {
 				audioElement.audio.volume = percentage;
 			}
 		}
@@ -139,6 +139,10 @@ function shuffleArray(a) {
 
 function setTrack(trackID, newPlaylist, play) {
 	// if the User selects a new song, that comes with a new playlist (ie, selected a song from a different Album)
+
+	console.log("newPlaylist: " + newPlaylist);
+	console.log("currentPlaylist: " + currentPlaylist);
+
 	if (newPlaylist != currentPlaylist) {
 		currentPlaylist = newPlaylist;
 		 // .slice() creates a copy of an array
@@ -152,15 +156,16 @@ function setTrack(trackID, newPlaylist, play) {
 	} else {
 		currentIndex = currentPlaylist.indexOf(trackID);
 	}
-
-	/// pauseSong();
+	// (???)
+	pauseSong();
 
 	$.post("includes/handlers/ajax/getSongJson.php", { songID : trackID }, function(data) {
 		// parse the data to convert it into an object
 		var track = JSON.parse(data);
 		// automatically update the html element with the songTitle of track currently playing
-		$(" .trackName span").text(track.songTitle);
-		// use AJAX to retrieve the artistName of the song curretly playing
+		$(".trackName span").text(track.songTitle);
+
+		// retrieve the artistName of the song curretly playing
 		$.post("includes/handlers/ajax/getArtistJson.php", { artistID : track.songArtist }, function(data) {
 			var artist = JSON.parse(data);
 			// automatically update the html element with the artistName of track currently playing
@@ -168,7 +173,8 @@ function setTrack(trackID, newPlaylist, play) {
 			// include onclick(openPage('artist.php...')) to span element
 			$(".trackInfo .artistName span").attr("onclick", "openPage('artist.php?artistID=" + artist.artistID + "')");
 		});
-		// use AJAX to retrieve the albumArtwork of the song curretly playing
+
+		// retrieve the albumArtwork of the song curretly playing
 		$.post("includes/handlers/ajax/getAlbumJson.php", { albumID : track.songAlbum }, function(data) {
 			var album = JSON.parse(data);
 			// automatically update the html element with the artistName of track currently playing
@@ -180,9 +186,12 @@ function setTrack(trackID, newPlaylist, play) {
 		});
 
 		audioElement.setTrack(track);
+		/// removed to stop song from auto playing
+		///// playSong();
 
 		if (play) {
-			playSong();
+			/// playSong();
+			audioElement.play();
 		}
 	});
 }
@@ -247,9 +256,7 @@ function pauseSong() {
 					<span class="progressTime current">0.00</span>
 					<div class="progressBar">
 						<div class="progressBarBackground">
-							<div class="progress">
-
-							</div>
+							<div class="progress"></div>
 						</div>
 					</div>
 					<span class="progressTime remaining">0.00</span>
@@ -263,9 +270,7 @@ function pauseSong() {
 				</button>
 				<div class="progressBar">
 					<div class="progressBarBackground">
-						<div class="progress">
-
-						</div>
+						<div class="progress"></div>
 					</div>
 				</div>
 			</div>

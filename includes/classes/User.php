@@ -1,6 +1,5 @@
 <?php
 	class User {
-
 		protected $db;
 		private $con;
         private $username;
@@ -31,6 +30,5 @@
 			$query = $stmt->fetch(PDO::FETCH_ASSOC);
 			return $query['fullName'];
 		}
-
 	}
 ?>
