@@ -6,12 +6,9 @@
 
 	// "localhost" = host
 	// "root" = user
-	// "teachesl_admin" = user (siteground)
 	// "root" = password (MAMP)
 	// "mysql" = password (AMPPS)
-	// "K!Z7uXRu(#-6FsfqLg" = password (siteground)
 	// "slotify" = mysql database name
-	// "teachesl_slotify" = mysql database name (siteground)
 
 	$con = mysqli_connect("localhost", "root", "mysql", "slotify"); // connects to database
 
