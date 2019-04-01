@@ -22,7 +22,6 @@ $(document).click(function(click) {
 
 // event: if the User scrolls on the page
 $(window).scroll(function() {
-	// call hideOptionsMenu() function
 	hideOptionsMenu();
 });
 
@@ -52,7 +51,7 @@ $(document).on("change", "select.playlist", function() {
 
 function openPage(url) {
 	// if timer is going, clear timer when open new page
-	if(timer != null) {
+	if (timer != null) {
 		clearTimeout(timer);
 	}
 	// if the URL doesn't have a "?", include it
@@ -74,12 +73,10 @@ function openPage(url) {
 function removeFromPlaylist(button, playlistID) {
 	// 'prevAll' will go up multiple ancestors to find the match in the html doc
 	var songID = $(button).prevAll(".songID").val();
-	// ajax call
 	$.post(
 		"includes/handlers/ajax/removeFromPlaylist.php",
 		{ playlistID : playlistID, songID: songID }
 	)
-	// .done() executes when the ajax call is completed
 	.done(function(error) {
 		if (error != "") {
 			alert(error);
@@ -95,33 +92,28 @@ function createPlaylist() {
 	var popup = prompt("Enter name of the playlist");
 
 	if (popup != null) {
-		// AJAX call
 		$.post("includes/handlers/ajax/createPlaylist.php", { name: popup, username: userLoggedIn })
-		// .done() executes when the ajax call is completed
 		.done(function(error) {
-
 			if (error != "") {
 				alert(error);
 				return;
 			}
-			// do something when ajax returns
 			// open openMusic.php (which the page we're already on, so it's essentially a refresh)
 			openPage("yourMusic.php");
 		});
 	}
 }
 
-// function to hide the optionsMenu (function is called when page is scrolled)
+// hides optionsMenu
+// called when page is scrolled
 function hideOptionsMenu() {
 	var menu = $(".optionsMenu");
-
 	if (menu.css("display") != "none") {
 		menu.css("display", "none");
 	}
-
 }
 
-// function to ensure that optionsMenu button appears in line with each <li class='trackListRow'>
+// ensure that optionsMenu button appears in line with each <li class='trackListRow'>
 // to do that, need to get the position of each trackListRow on the screen
 function showOptionsMenu(button) {
 	// everytime the songID menu is shown,
@@ -131,7 +123,6 @@ function showOptionsMenu(button) {
 	var menuWith = menu.width();
 	// finds the value of the songID item from the menu (which = ".optionsMenu")
 	menu.find(".songID").val(songID);
-
 	// distance from top of window to top of document
 	var scrollTop = $(window).scrollTop();
 	// distance from top of document
@@ -146,11 +137,8 @@ function showOptionsMenu(button) {
 
  function deletePlaylist(playlistID) {
 	var prompt = confirm("Are you sure you want to delete this playlist?");
-
-	if (prompt == true) {
-		// AJAX call
+	if (prompt) {
 		$.post("includes/handlers/ajax/deletePlaylist.php", { playlistID : playlistID })
-		// .done() executes when the ajax call is completed
 		.done(function(error) {
 			if (error != "") {
 				alert(error);
@@ -166,22 +154,17 @@ function formatTime(seconds) {
 	var time = Math.round(seconds);
 	var minutes = Math.floor(time/60);
 	var seconds = time - (minutes * 60);
-
 	var extraZero;
 	// a one-line expression (instead of an if-statement) that says if seconds < 10, then extraZero = "0", else extraZero = "1"
 	var extraZero = (seconds < 10) ? "0" : "";
-
 	return minutes + ":" + extraZero + seconds;
 }
 
 function updateTimeProgressBar(audio) {
 	$(".progressTime.current").text(formatTime(audio.currentTime));
-	// IDEA: I actually prefer not to have the total duration decreasing
 	$(".progressTime.remaining").text(formatTime(audio.duration - audio.currentTime));
-
-	var progress = audio.currentTime / audio.duration * 100; // calculating a percentage
+	var progress = audio.currentTime / audio.duration * 100;
 	$(".playbackBar .progress").css("width", progress + "%");
-
 }
 
 function updateVolumeProgressBar(audio) {
@@ -193,43 +176,49 @@ function playFirstSong() {
 	setTrack(tempPlaylist[0], tempPlaylist, true);
 }
 
-
 function Audio() {
 	this.currentlyPlaying;
-	// "this.audio" is the property of the Class. It's the same as self.name = name ?
+	// 'this' refers to the object that event was called on (which in this case, is 'audio')
 	// "document.createElement('audio')" creates an HTML element which, in this case, is a built-in HTML audio element
-	this.audio = document.createElement('audio');
-	this.audio.addEventListener("canplay", function() {
-		// 'this' refers to the object that event was called on (which in this case, is 'audio')
-		var duration = formatTime(this.duration);
-		// update the HTML tag with the duration of the song
-		$(".progressTime.remaining").text(duration);
-	});
-	this.audio.addEventListener("ended", function() {
-		nextSong();
-	});
-	this.audio.addEventListener("timeupdate", function() {
-		if(this.duration) {
-			updateTimeProgressBar(this);
-		}
-	});
-	this.audio.addEventListener("volumechange", function() {
-		updateVolumeProgressBar(this);
-	});
+	this.audio = document.createElement("audio");
+
 	// takes the JSON object 'track' as a parameter
 	this.setTrack = function(track) {
 		this.currentlyPlaying = track;
 		this.audio.src = track.path;
 	}
+
 	this.play = function() {
 		this.audio.play();
-	}
+	};
+
 	this.pause = function() {
 		this.audio.pause();
-	}
+	};
+
+	this.audio.addEventListener("canplay", function() {
+		var duration = formatTime(this.duration);
+		// update the HTML tag with the duration of the song
+		$(".progressTime.remaining").text(duration);
+	});
+
+	this.audio.addEventListener("ended", function() {
+		nextSong();
+	});
+
+	this.audio.addEventListener("timeupdate", function() {
+		if (this.duration) {
+			updateTimeProgressBar(this);
+		}
+	});
+
+	this.audio.addEventListener("volumechange", function() {
+		updateVolumeProgressBar(this);
+	});
+
 	this.setTime = function(seconds) {
 		this.audio.currentTime = seconds;
-	}
+	};
 }
 
 // logout with an ajax call
