@@ -72,5 +72,3 @@ $artist = $album->getArtist();
 	<input type="hidden" class="songID">
 	<?php echo Playlist::getPlaylistsDropdown($con, $userLoggedIn->getUsername()); ?>
 </nav>
-
-<?php include("includes/footer.php"); ?>
