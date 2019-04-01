@@ -8,8 +8,6 @@ if (isset($_GET['term'])) {
 }
 
 $db = MyPDO::instance();
-// BUG: 'the Beatles' isn't showing up in artist search
-// BUG: searches longer than 2 characters aren't working
 ?>
 
 <!-- HTML element for searchInput -->
@@ -114,15 +112,44 @@ if ($term == "") {
 <div class="artistContainer borderBottom">
     <h2>ARTISTS</h2>
     <?php
+    /* **
+        ** BUG: for some reason, PDO script isn't returning some artists (eg The Beatles)
+        ** as a temp measure, I have included mysqli script here from the Course
+        ** in future, resolve the issue & include the PDO script
+        ** a draft is commented out below
+    ** */
+    // search for artist using search term entered by User
+    $sql = "SELECT artistID FROM Artists WHERE artistName LIKE '%$term%' LIMIT 10";
+    $artistsQuery = mysqli_query($con, $sql);
+    // if no artists are found
+    if(mysqli_num_rows($artistsQuery) == 0) {
+        echo "<span class='noResults'>No artists found matching " . $term . "</span>";
+    }
+
+    while ($row = mysqli_fetch_array($artistsQuery)) {
+        $artistFound = new Artist($con, $row['artistID']);
+
+        echo "<div class='searchResultRow'>
+                <div class='artistName'>
+                    <span role='link' tabindex='0' onclick='openPage(\"artist.php?artistID=" . $artistFound->getID() ."\")'>
+                    ". $artistFound->getName() ."
+                    </span>
+                </div>
+            </div>";
+    }
+    /*
     // select all artists with term included
     $sql = "SELECT artistID FROM Artists
             WHERE artistName LIKE CONCAT('%', ?, '%')";
     $stmt = $db->run($sql, [$term]);
+    // if no artists found
     if ($stmt->fetch(PDO::FETCH_ASSOC) == 0) {
         echo "<span class='noResults'> No artists found matching " . $term . "</span>";
     }
 
-    while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+    while ($row = $stmt->fetchAll(PDO::FETCH_ASSOC)) {
+        echo "An artist found!<br><br>";
+        /*
         $artistFound = new Artist($con, $row['artistID']);
 
         echo "<div class='searchResultRow'>
@@ -133,6 +160,7 @@ if ($term == "") {
                 </div>
             </div>";
     }
+    */
     ?>
 </div>
 

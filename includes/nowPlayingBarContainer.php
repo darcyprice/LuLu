@@ -185,7 +185,7 @@ function setTrack(trackID, newPlaylist, play) {
 		audioElement.setTrack(track);
 
 		if (play) {
-			audioElement.play();
+			playSong();
 		}
 	});
 }

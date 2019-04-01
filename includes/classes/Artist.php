@@ -2,11 +2,11 @@
 	class Artist {
 
 		protected $db;
-		/// private $con;
+		private $con;
 		private $artistID;
 
 		public function __construct($con, $artistID) {
-			/// $this->con = $con;
+			$this->con = $con;
 			$this->db = MyPDO::instance();
 			$this->artistID = $artistID;
 		}
