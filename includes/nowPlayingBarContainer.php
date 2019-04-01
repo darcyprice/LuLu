@@ -140,9 +140,6 @@ function shuffleArray(a) {
 function setTrack(trackID, newPlaylist, play) {
 	// if the User selects a new song, that comes with a new playlist (ie, selected a song from a different Album)
 
-	console.log("newPlaylist: " + newPlaylist);
-	console.log("currentPlaylist: " + currentPlaylist);
-
 	if (newPlaylist != currentPlaylist) {
 		currentPlaylist = newPlaylist;
 		 // .slice() creates a copy of an array
@@ -156,7 +153,7 @@ function setTrack(trackID, newPlaylist, play) {
 	} else {
 		currentIndex = currentPlaylist.indexOf(trackID);
 	}
-	// (???)
+
 	pauseSong();
 
 	$.post("includes/handlers/ajax/getSongJson.php", { songID : trackID }, function(data) {
@@ -186,11 +183,8 @@ function setTrack(trackID, newPlaylist, play) {
 		});
 
 		audioElement.setTrack(track);
-		/// removed to stop song from auto playing
-		///// playSong();
 
 		if (play) {
-			/// playSong();
 			audioElement.play();
 		}
 	});
